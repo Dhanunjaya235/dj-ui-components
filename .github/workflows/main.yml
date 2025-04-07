@@ -19,6 +19,8 @@ jobs:
     if: github.event_name == 'workflow_dispatch'  # Only run on workflow_dispatch
     steps:
       - uses : actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch || github.head_ref || github.ref_name }}
       - name: Check if branch exists
         run: |
           if git ls-remote --heads origin refs/heads/${{ github.event.inputs.branch }} | grep -q "${{ github.event.inputs.branch }}"; then
@@ -34,4 +36,4 @@ jobs:
     steps:
         - name : Check job 2 
           run :
-             echo "Job 2 running"
+             echo "Job 2 running on branch ${{ github.event.inputs.branch || github.head_ref || github.ref_name }}"
